@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9ebc3bb92ad2141938ddfcad49c257, type: 3}
+  m_Name: 09_Adobe
+  m_EditorClassIdentifier: 
+  id: 9
+  entityName: Adobe
+  description: 
+  icon: {fileID: -2133188589, guid: eb04f045a45957b4a96666f3c1f9461f, type: 3}
+  chainEffect: {fileID: 11400000, guid: 2d68f4fe07a17e149bb9781b7dfc569f, type: 2}
+  Modifier:
+  - Statistic: 2
+    Value: 1
