@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
+using NUnit.Framework.Interfaces;
 
 [Serializable]
 public struct UINeighbor
@@ -122,6 +123,7 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     }
     public void Clear()
     {
+        ItemData = null;
         nameTxt.text = "";
         amountTxt.text = "";
         icon.sprite = null;

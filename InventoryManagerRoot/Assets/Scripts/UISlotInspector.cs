@@ -24,15 +24,21 @@ public class UISlotInspector : MonoBehaviour
     public void SetSlot(Item slot)
     {
 
-        icon.sprite =  slot.Value.Icon;
 
 
+        icon.sprite = null;
 
         foreach (var item in txts)
         {
             Destroy(item.gameObject);
         }
         txts.Clear();
+        if (slot == null)
+            return;
+
+
+
+        icon.sprite = slot.Value.Icon;
 
         foreach (var stat in slot.BaseStats)
         {
@@ -52,5 +58,15 @@ public class UISlotInspector : MonoBehaviour
             txt.text = modifier.effectType.ToString() + " == " + modifier.modifierValue;
             txts.Add(txt);
         }
+        if(slot.Value.chainEffect  != null)
+        {
+            foreach (var effects in slot.Value.chainEffect.rangeOfEffects)
+            {
+                TextMeshProUGUI txt = Instantiate(textPrefab, container);
+                txt.text = effects.direction.ToString() + " ; " + effects.step + " ; " + effects.valueModifier.effectType + ",";
+                txts.Add(txt);
+            }
+        }
+        
     }
 }

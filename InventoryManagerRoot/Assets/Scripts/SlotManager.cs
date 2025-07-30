@@ -13,7 +13,8 @@ public class SlotManager<T>
     public  Action<int ,Slot> OnSlotUpdated;
     
     public  Action<int, int> OnSlotSwapped;
-    
+    public Action OnChange;
+
     public  Action<int> OnSlotCleared;
 
     public SlotManager(Item value , int quantity)
@@ -38,6 +39,7 @@ public class SlotManager<T>
             currentSlots[position] = slot;
 
             OnSlotAdded?.Invoke(position, slot);
+            OnChange?.Invoke();
             return;
         }
         if (slot.CompareSlot(value))
@@ -46,6 +48,7 @@ public class SlotManager<T>
             currentSlots[position] = slot;
 
             OnSlotUpdated?.Invoke(position, slot);
+            OnChange?.Invoke();
         }
         else
         {
