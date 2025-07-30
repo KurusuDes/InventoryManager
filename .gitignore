@@ -11,6 +11,49 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Adaptado para proyecto dentro de InventoryManagerRoot/
+InventoryManagerRoot/[Ll]ibrary/
+InventoryManagerRoot/[Tt]emp/
+InventoryManagerRoot/[Oo]bj/
+InventoryManagerRoot/[Bb]uild/
+InventoryManagerRoot/[Bb]uilds/
+InventoryManagerRoot/[Ll]ogs/
+InventoryManagerRoot/[Uu]ser[Ss]ettings/
+InventoryManagerRoot/[Mm]emoryCaptures/
+InventoryManagerRoot/[Rr]ecordings/
+InventoryManagerRoot/Assets/Plugins/Editor/JetBrains*
+InventoryManagerRoot/.vs/
+InventoryManagerRoot/.gradle/
+InventoryManagerRoot/ExportedObj/
+InventoryManagerRoot/.consulo/
+InventoryManagerRoot/*.csproj
+InventoryManagerRoot/*.unityproj
+InventoryManagerRoot/*.sln
+InventoryManagerRoot/*.suo
+InventoryManagerRoot/*.tmp
+InventoryManagerRoot/*.user
+InventoryManagerRoot/*.userprefs
+InventoryManagerRoot/*.pidb
+InventoryManagerRoot/*.booproj
+InventoryManagerRoot/*.svd
+InventoryManagerRoot/*.pdb
+InventoryManagerRoot/*.mdb
+InventoryManagerRoot/*.opendb
+InventoryManagerRoot/*.VC.db
+InventoryManagerRoot/*.pidb.meta
+InventoryManagerRoot/*.pdb.meta
+InventoryManagerRoot/*.mdb.meta
+InventoryManagerRoot/sysinfo.txt
+InventoryManagerRoot/*.apk
+InventoryManagerRoot/*.aab
+InventoryManagerRoot/*.unitypackage
+InventoryManagerRoot/*.unitypackage.meta
+InventoryManagerRoot/*.app
+InventoryManagerRoot/crashlytics-build.properties
+InventoryManagerRoot/Assets/AddressableAssetsData/*/*.bin*
+InventoryManagerRoot/Assets/StreamingAssets/aa.meta
+InventoryManagerRoot/Assets/StreamingAssets/aa/*
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
