@@ -30,7 +30,13 @@ public class Inventory : MonoBehaviour
         ItemManager = new(null, size);
         ItemManager.SetNeighbors(rows: 3);
 
+        ItemManager.OnChange += SetAndTriggerEffects;
         SetUIInventory();
+    }
+    public void SetAndTriggerEffects()
+    {
+       SetAllEffects();
+       EnableAllEffects();
     }
     public void SetUIInventory()
     {
@@ -38,6 +44,7 @@ public class Inventory : MonoBehaviour
         ItemManager.OnSlotAdded += uiInventory.SetSlot;
         ItemManager.OnSlotUpdated += uiInventory.SetSlot;
         ItemManager.OnSlotCleared += uiInventory.ClearSlot;
+     
     }
     [Button]
     public void AddItemToInventory(int _position, Item _item, int _quantity = 0)
@@ -84,6 +91,17 @@ public class Inventory : MonoBehaviour
             ItemManager.CurrentSlots[i].Value.ApplyModifiers();
         }
        
+    }
+    [Button]
+    public void ClearAllEffects()//->Limpia
+    {
+        for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
+        {
+            if (ItemManager.CurrentSlots[i].Value == null) continue;
+
+            ItemManager.CurrentSlots[i].Value.ResetStats();
+        }
+
     }
     [Button]
     public void EnableAllEffects()//->Disparar todos los efecto y activarlos

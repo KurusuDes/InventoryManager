@@ -36,26 +36,18 @@ public class Item
     }
     public void ResetStats()//->Cuando se mueve algo limpiar los modifiers
     {
-        BaseStats.Clear();
-        BaseStats.AddRange(Value.Stats);
-        // BaseStats = new List<StatModifier>(Value.Stats); 
+        modifiers.Clear();
+        ModifiedStats.Clear();
+        ModifiedStats = new List<StatModifier>(BaseStats);
+
     }
     public void AddModifier(ValueModifier effect)
     {
         modifiers.Add(effect);
-       /* if (effect != null && !modifiers.Contains(effect))
-        {
-            modifiers.Add(effect);
-        }*/
     }
     public void RemoveModifier(ValueModifier effect)
     {
         modifiers.Remove(effect);
-        /*
-        if (effect != null && modifiers.Contains(effect))
-        {
-            modifiers.Remove(effect);
-        }*/
     }
 
     public void ApplyEffect()
@@ -97,8 +89,6 @@ public class Item
 
         }
     }
-
-
     public void SortValueModifiers(List<ValueModifier> modifiers)
     {
         modifiers.Sort((a, b) =>
@@ -155,8 +145,8 @@ public class Item
 
             ApplyModifier(direction, valueModifier, neighborSlot, step - 1);
         }
-        else
-            return;
+       /* else
+            return;*/
 
     }
     public void ShowModifiers()
