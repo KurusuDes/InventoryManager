@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes: []
   rangeOfEffects:
   - direction: 3
-    step: 1
+    step: 5
     valueModifier:
       effectType: 1
       modifierValue: 10
