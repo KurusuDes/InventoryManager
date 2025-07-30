@@ -37,7 +37,7 @@ public class ItemSO : BaseEntitySO
 {
     #region References 
     [ShowInInspector, InlineEditor] public EffectDirection chainEffect;
-    [ShowInInspector] public List<StatModifier> Modifier;
+    [ShowInInspector] public List<StatModifier> Stats;
 
 
     #endregion

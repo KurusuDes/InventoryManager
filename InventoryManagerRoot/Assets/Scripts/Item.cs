@@ -13,31 +13,32 @@ public class Item
 {
     private List<ValueModifier> modifiers = new List<ValueModifier>();
 
-    public Slot<Item> ItemSlot;
+    public Slot ItemSlot;
     [ShowInInlineEditors]public ItemSO Value ;
 
-    public List<StatModifier> currentStat;
+    public List<StatModifier> BaseStats = new();
+    public List<StatModifier> ModifiedStats = new();
 
     public Item(ItemSO value)
     {
         Value = value;
-        currentStat = new List<StatModifier>(Value.Modifier);
+        BaseStats = new List<StatModifier>(Value.Stats);
     }
-    public Item(ItemSO value , Slot<Item> slot)
+    public Item(ItemSO value , Slot slot)
     {
         Value = value;
         ItemSlot = slot;
-        currentStat = new List<StatModifier>(Value.Modifier);
+        BaseStats = new List<StatModifier>(Value.Stats);
     }
-    void Start()
+    public bool CompareItem(ItemSO _value)
     {
-        ResetStats();
+        return Value.Equals(_value);
     }
     public void ResetStats()//->Cuando se mueve algo limpiar los modifiers
     {
-        currentStat.Clear();
-        currentStat.AddRange(Value.Modifier);
-        // currentStat = new List<StatModifier>(Value.Modifier); 
+        BaseStats.Clear();
+        BaseStats.AddRange(Value.Stats);
+        // BaseStats = new List<StatModifier>(Value.Stats); 
     }
     public void AddModifier(ValueModifier effect)
     {
@@ -61,9 +62,14 @@ public class Item
     {
         SortValueModifiers(modifiers);
 
-        for (int i = 0; i < currentStat.Count; i++)
+        //-RESETEAR STATS MODIFICADOS
+        ModifiedStats.Clear();
+        ModifiedStats = new List<StatModifier>(BaseStats);
+
+
+        for (int i = 0; i < ModifiedStats.Count; i++)
         {
-            float value = currentStat[i].Value;
+            float value = ModifiedStats[i].Value;
 
             foreach (var mod in modifiers)
             {
@@ -85,9 +91,9 @@ public class Item
             }
 
             // Asignar el valor modificado de vuelta
-            StatModifier stat = currentStat[i];
+            StatModifier stat = ModifiedStats[i];
             stat.Value = (int)value;
-            currentStat[i] = stat;
+            ModifiedStats[i] = stat;
 
         }
     }
@@ -111,8 +117,11 @@ public class Item
     }
    
     [Button]
-    public void ApplyModifiers()
+    public void ApplyModifiers()//-> LOS SLOTS VACIOS NO DEBEN SIGNIFICAR QUE TE DETIENE LOS SLOTS VACIOS DEBEN CONTENER LOS MODIFICADORES
+
     {
+        modifiers.Clear();//->RESETEAR MODIFICADORES
+
         if (Value.chainEffect == null || Value.chainEffect.rangeOfEffects.Count == 0)
         {
             Debug.LogWarning("No effects to apply.");
@@ -127,11 +136,11 @@ public class Item
             ApplyModifier(rangeOfEffects[i].direction, rangeOfEffects[i].valueModifier, ItemSlot, rangeOfEffects[i].step);//-> pasa y aplica pasa y aplica
         }
     }
-    public void ApplyModifier(Directions direction,ValueModifier valueModifier , Slot<Item> target , int step  = 0)//- que pase el tipo de effecto tmb
+    public void ApplyModifier(Directions direction,ValueModifier valueModifier , Slot target , int step  = 0)//- que pase el tipo de effecto tmb
     {
         if (step == 0) return;
        
-        if (target.GetNeighbor(direction, out Slot<Item> neighborSlot))
+        if (target.GetNeighbor(direction, out Slot neighborSlot))
         {
             Debug.Log("TryToApplyEffect");
 
@@ -162,4 +171,8 @@ public class Item
             Debug.Log($"Modifier: {modifier.modifierValue}, Value: {modifier.effectType.ToString()}");
         }
     }
+
+
+
+    public List<ValueModifier> Modifiers => modifiers;
 }

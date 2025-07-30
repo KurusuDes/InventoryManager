@@ -6,27 +6,27 @@ using UnityEngine;
 [Serializable]
 public class SlotManager<T>
 {
-    private Dictionary<int, Slot<T>> currentSlots = new();
+    private Dictionary<int, Slot> currentSlots = new();
 
 
-    public  Action<int , Slot<T>> OnSlotAdded;
-    public  Action<int ,Slot<T>> OnSlotUpdated;
+    public  Action<int , Slot> OnSlotAdded;
+    public  Action<int ,Slot> OnSlotUpdated;
     
     public  Action<int, int> OnSlotSwapped;
     
     public  Action<int> OnSlotCleared;
 
-    public SlotManager(T value , int quantity)
+    public SlotManager(Item value , int quantity)
     {
         for (int i = 0; i < quantity; i++)
         {
-            Slot<T> _slot = new Slot<T>(value, 0);
+            Slot _slot = new Slot(value, 0);
             currentSlots.Add(i, _slot);
         }
     }
-    public void Add(int position, T value,int quantity = 0)
+    public void Add(int position, Item value,int quantity = 0)
     {
-        if (!currentSlots.TryGetValue(position, out Slot<T> slot))
+        if (!currentSlots.TryGetValue(position, out Slot slot))
         {
             Debug.LogError("Position not found in inventory");
             return;
@@ -40,7 +40,7 @@ public class SlotManager<T>
             OnSlotAdded?.Invoke(position, slot);
             return;
         }
-        if (slot.CompareItem(value))
+        if (slot.CompareSlot(value))
         {
             slot.AddQuantity(quantity);
             currentSlots[position] = slot;
@@ -56,7 +56,7 @@ public class SlotManager<T>
     { 
         currentSlots[id].Clear();
     }
-    public Slot<T> GetByKey(int key)
+    public Slot GetByKey(int key)
     { 
         return currentSlots[key];
     }
@@ -71,16 +71,16 @@ public class SlotManager<T>
         if (fromIndex == toIndex)
             return;
 
-        Slot<T> fromSlot = currentSlots[fromIndex].Clone();
-        Slot<T> toSlot = currentSlots[toIndex].Clone();
+        Slot fromSlot = currentSlots[fromIndex].Clone();
+        Slot toSlot = currentSlots[toIndex].Clone();
 
         if (fromSlot == null || fromSlot.Value == null)
         {
             Debug.LogWarning("No hay item para mover en el slot de origen.");
             return;
         }
-
-        if (toSlot.Value == null || fromSlot.CompareItem(toSlot.Value))
+       
+        if (toSlot.Value == null || fromSlot.CompareSlot(toSlot.Value))
         {
             Add(toIndex, fromSlot.Value, fromSlot.Quantity);
             currentSlots[fromIndex].Clear(); 
@@ -175,7 +175,7 @@ public class SlotManager<T>
         };
     }
 
-    public Dictionary<int, Slot<T>> CurrentSlots => currentSlots;
+    public Dictionary<int, Slot> CurrentSlots => currentSlots;
 
 
 }

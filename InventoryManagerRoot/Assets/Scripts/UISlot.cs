@@ -54,21 +54,19 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
         HasContent = false;
         
     }
-    public void SetNeighbors<T>(Slot<T> _slot, UIInventory _uiIventory)
+    public void SetNeighbors(Slot _slot, UIInventory _uiIventory)
     {
         foreach (var neighbor in Neighbors)
         {
-            if (!_slot.Neighbors.TryGetValue(neighbor.Direction, out Slot<T> value))
+            if (!_slot.Neighbors.TryGetValue(neighbor.Direction, out Slot value))
             {
                 neighbor.Connector.SetActive(false);
             }
         }
 
     }
-    public void SetSlot<T>(Slot<T> _slot , UIInventory _uiIventory)where T : Item
-    {
-        
-
+    public void SetSlot(Slot _slot , UIInventory _uiIventory)
+    {      
         if (_slot == null || _slot.Value == null)
         {
             Clear();
@@ -134,10 +132,10 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     {
         return GameManager.Instance.GetItemByID(itemDatabaseID);
     }
-    public Slot<ItemSO> GetSlot()
+   /* public Slot<ItemSO> GetSlot()
     {
         return null;
-    }
+    }*/
     private void Highlight(bool _highlight)
     {
         print("Try To Change Color");

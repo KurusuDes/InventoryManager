@@ -34,11 +34,23 @@ public class UISlotInspector : MonoBehaviour
         }
         txts.Clear();
 
-        foreach (var stat in slot.currentStat)
+        foreach (var stat in slot.BaseStats)
         {
-           TextMeshProUGUI txt =  Instantiate(textPrefab, container);
+            TextMeshProUGUI txt =  Instantiate(textPrefab, container);
             txt.text = stat.Statistic.ToString()+ " : " + stat.Value;
             txts.Add(txt);  
+        }
+        foreach (var stat in slot.ModifiedStats)
+        {
+            TextMeshProUGUI txt = Instantiate(textPrefab, container);
+            txt.text = stat.Statistic.ToString() + " : " + stat.Value;
+            txts.Add(txt);
+        }
+        foreach (var modifier in slot.Modifiers)
+        {
+            TextMeshProUGUI txt = Instantiate(textPrefab, container);
+            txt.text = modifier.effectType.ToString() + " == " + modifier.modifierValue;
+            txts.Add(txt);
         }
     }
 }

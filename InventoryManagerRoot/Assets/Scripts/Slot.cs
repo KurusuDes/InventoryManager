@@ -14,25 +14,25 @@ public enum Directions
     SouthWest//Abajo izquierda
 }
 
-public class Slot<T>
+public class Slot
 {
-    private T value;
+    private Item value;
     private int quantity = 0;
     private bool isBlocked = false;
     private bool isHighlighted = false;
     
-    private Dictionary<Directions, Slot<T>> neighbors = new Dictionary<Directions, Slot<T>>();
+    private Dictionary<Directions, Slot> neighbors = new Dictionary<Directions, Slot>();
 
-    public T Value => value;
+    public Item Value => value;
     public int Quantity => quantity;
     public bool IsBlocked => isBlocked; 
     public bool IsHighlighted => isHighlighted;
 
-    public Slot(T _value)
+    public Slot(Item _value)
     {
         value = _value;
     }
-    public Slot(T _value, int _quantity)
+    public Slot(Item _value, int _quantity)
     {
         value = _value;
         quantity = _quantity;
@@ -41,12 +41,12 @@ public class Slot<T>
     {
         isBlocked = _isBlocked;
     }
-    public void SetNeighbor(Directions _direction , Slot<T> slot)
+    public void SetNeighbor(Directions _direction , Slot slot)
     {
         //neighbors[_direction] = slot;
         neighbors.Add(_direction, slot);
     }
-    public bool GetNeighbor(Directions _direction , out Slot<T> slot)
+    public bool GetNeighbor(Directions _direction , out Slot slot)
     {
         if (neighbors.TryGetValue(_direction, out var neighbor) && neighbor != null)
         {
@@ -61,11 +61,16 @@ public class Slot<T>
     {
         quantity += _quantity;
     }
-    public bool CompareItem(T _value)
+    public bool CompareSlot(Item _value)
     {
-        return value.Equals(_value);
+        if(_value == null)
+        {
+            return false;
+        }
+
+        return value.CompareItem(_value.Value);
     }
-    public void SetValue(T _value)
+    public void SetValue(Item _value)
     {
         value = _value;
     }
@@ -85,12 +90,12 @@ public class Slot<T>
     {
         neighbors[dir] = null;
     }
-    public Slot<T> Clone()
+    public Slot Clone()
     {
-        Slot<T> clone = new Slot<T>(value, quantity);
+        Slot clone = new Slot(value, quantity);
         
         return clone;
     }
 
-    public Dictionary<Directions, Slot<T>> Neighbors => neighbors;
+    public Dictionary<Directions, Slot> Neighbors => neighbors;
 }

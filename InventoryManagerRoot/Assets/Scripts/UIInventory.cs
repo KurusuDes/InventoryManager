@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
@@ -72,7 +71,7 @@ public class UIInventory : MonoBehaviour
         slotsContainer.GetComponent<GridLayoutGroup>().constraintCount = inventory.rows;
     }
 
-    public void SetSlot(int position, Slot<Item> slot)
+    public void SetSlot(int position, Slot slot)
     {
         if (position < 0 || position >= slots.Count || slot == null || slots[position] == null)
         {

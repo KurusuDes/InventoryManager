@@ -17,6 +17,6 @@ MonoBehaviour:
   description: 
   icon: {fileID: 1238488230, guid: eb04f045a45957b4a96666f3c1f9461f, type: 3}
   chainEffect: {fileID: 11400000, guid: 76eef8d2975c3c44f8cf49b922c1a45a, type: 2}
-  Modifier:
+  Stats:
   - Statistic: 1
     Value: 1

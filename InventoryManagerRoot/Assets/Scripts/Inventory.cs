@@ -79,6 +79,8 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
         {
+            if (ItemManager.CurrentSlots[i].Value == null) continue;
+
             ItemManager.CurrentSlots[i].Value.ApplyModifiers();
         }
        
@@ -88,6 +90,8 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
         {
+            if (ItemManager.CurrentSlots[i].Value == null) continue;
+
             ItemManager.CurrentSlots[i].Value.ApplyEffect();
         }
 
