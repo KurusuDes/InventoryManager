@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour
     }
     public void SetAndTriggerEffects()
     {
+       ClearAllEffects();
        SetAllEffects();
        EnableAllEffects();
     }
@@ -115,14 +116,16 @@ public class Inventory : MonoBehaviour
 
     }
     [Button]
-    public void ApplyEffectOfItem(int position)
+    public void SetEffect(int position)
     {
-         ItemManager.CurrentSlots[position].Value.ApplyModifiers();  
+        if (ItemManager.CurrentSlots[position].Value == null) return;
+        ItemManager.CurrentSlots[position].Value.ApplyModifiers();  
     }
     [Button]
-    public void ShowModifiers(int position)
+    public void EnableEffects(int position)
     {
-        ItemManager.CurrentSlots[position].Value.ShowModifiers();
+        if (ItemManager.CurrentSlots[position].Value == null) return;
+        ItemManager.CurrentSlots[position].Value.ApplyEffect();
     }
     #endregion
 

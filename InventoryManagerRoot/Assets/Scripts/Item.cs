@@ -55,8 +55,8 @@ public class Item
         SortValueModifiers(modifiers);
 
         //-RESETEAR STATS MODIFICADOS
-        ModifiedStats.Clear();
-        ModifiedStats = new List<StatModifier>(BaseStats);
+       /* ModifiedStats.Clear();
+        ModifiedStats = new List<StatModifier>(BaseStats);*/
 
 
         for (int i = 0; i < ModifiedStats.Count; i++)
@@ -110,7 +110,7 @@ public class Item
     public void ApplyModifiers()//-> LOS SLOTS VACIOS NO DEBEN SIGNIFICAR QUE TE DETIENE LOS SLOTS VACIOS DEBEN CONTENER LOS MODIFICADORES
 
     {
-        modifiers.Clear();//->RESETEAR MODIFICADORES
+        //modifiers.Clear();//->RESETEAR MODIFICADORES
 
         if (Value.chainEffect == null || Value.chainEffect.rangeOfEffects.Count == 0)
         {
@@ -128,7 +128,11 @@ public class Item
     }
     public void ApplyModifier(Directions direction,ValueModifier valueModifier , Slot target , int step  = 0)//- que pase el tipo de effecto tmb
     {
-        if (step == 0) return;
+        if (step == 0)
+        {
+            Debug.Log("Step is 0, stopping recursion.");
+            return;
+        }
        
         if (target.GetNeighbor(direction, out Slot neighborSlot))
         {
