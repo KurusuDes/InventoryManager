@@ -16,25 +16,33 @@ public enum Directions
 
 public class Slot
 {
-    private Item value;
+    private Item item = new();
     private int quantity = 0;
     private bool isBlocked = false;
     private bool isHighlighted = false;
     
     private Dictionary<Directions, Slot> neighbors = new Dictionary<Directions, Slot>();
 
-    public Item Value => value;
+    public Item Item => item;
     public int Quantity => quantity;
     public bool IsBlocked => isBlocked; 
     public bool IsHighlighted => isHighlighted;
 
+    public ItemSO ItemSO => item.itemSO;
     public Slot(Item _value)
     {
-        value = _value;
+        item = _value;
     }
-    public Slot(Item _value, int _quantity)
+    public Slot(int _quantity)
     {
-        value = _value;
+        item = new();
+        item.parentSlot = this;
+        quantity = _quantity;
+    }
+    public Slot(Item item,int _quantity)
+    {
+        item = new(item);
+        item.parentSlot = this;
         quantity = _quantity;
     }
     public Slot(bool _isBlocked)
@@ -61,22 +69,19 @@ public class Slot
     {
         quantity += _quantity;
     }
-    public bool CompareSlot(Item _value)
+    public bool CompareSlot(ItemSO itemSO)
     {
-        if(_value == null)
-        {
-            return false;
-        }
+        if(itemSO == null)  return false;
 
-        return value.CompareItem(_value.Value);
+        return item.CompareItem(itemSO);
     }
-    public void SetValue(Item _value)
+    public void SetValue(ItemSO _value)
     {
-        value = _value;
+        item.itemSO = _value;
     }
     public void Clear()
     {
-        value = default;
+        item.ClearItem();
         quantity = 0;
         isBlocked = false;
         isHighlighted = false;
@@ -92,7 +97,7 @@ public class Slot
     }
     public Slot Clone()
     {
-        Slot clone = new Slot(value, quantity);
+        Slot clone = new Slot(item, quantity);
         
         return clone;
     }

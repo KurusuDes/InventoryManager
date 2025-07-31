@@ -13,26 +13,45 @@ public class Item
 {
     private List<ValueModifier> modifiers = new List<ValueModifier>();
 
-    public Slot ItemSlot;
-    [ShowInInlineEditors]public ItemSO Value ;
+    public Slot parentSlot;
+    [ShowInInlineEditors]public ItemSO itemSO ;
 
     public List<StatModifier> BaseStats = new();
     public List<StatModifier> ModifiedStats = new();
-
+    public Item(Item item)
+    {
+        
+        itemSO = item.itemSO;
+    }
+    public Item()
+    {
+        itemSO = null;
+    }
     public Item(ItemSO value)
     {
-        Value = value;
-        BaseStats = new List<StatModifier>(Value.Stats);
+        itemSO = value;
+        BaseStats = new List<StatModifier>(itemSO.Stats);
     }
     public Item(ItemSO value , Slot slot)
     {
-        Value = value;
-        ItemSlot = slot;
-        BaseStats = new List<StatModifier>(Value.Stats);
+        itemSO = value;
+        parentSlot = slot;
+        Debug.Log("Item created with parent slot: " + parentSlot);
+        BaseStats = new List<StatModifier>(itemSO.Stats);
+    }
+    public bool HasItem()
+    {
+        return itemSO != null;
     }
     public bool CompareItem(ItemSO _value)
     {
-        return Value.Equals(_value);
+        return itemSO.Equals(_value);
+    }
+    public void ClearItem()//->Cuando se mueve algo limpiar los modifiers
+    {
+        itemSO = null;
+        ResetStats();
+
     }
     public void ResetStats()//->Cuando se mueve algo limpiar los modifiers
     {
@@ -112,18 +131,22 @@ public class Item
     {
         //modifiers.Clear();//->RESETEAR MODIFICADORES
 
-        if (Value.chainEffect == null || Value.chainEffect.rangeOfEffects.Count == 0)
+        if (itemSO == null||itemSO.chainEffect == null || itemSO.chainEffect.rangeOfEffects.Count == 0)
         {
-            Debug.LogWarning("No effects to apply.");
+            //Debug.LogWarning("No effects to apply.");
             return;
         }
 
-        List<EffectRange> rangeOfEffects = Value.chainEffect.rangeOfEffects;
+        List<EffectRange> rangeOfEffects = itemSO.chainEffect.rangeOfEffects;
 
         for (int i = 0; i < rangeOfEffects.Count; i++)
         {
-            Debug.Log("TryToApplyEffects");
-            ApplyModifier(rangeOfEffects[i].direction, rangeOfEffects[i].valueModifier, ItemSlot, rangeOfEffects[i].step);//-> pasa y aplica pasa y aplica
+            //Debug.Log("TryToApplyEffects");
+            if(parentSlot == null)
+            {
+                throw new System.Exception("Parent slot is null, cannot apply effects.");
+            }
+            ApplyModifier(rangeOfEffects[i].direction, rangeOfEffects[i].valueModifier, parentSlot, rangeOfEffects[i].step);//-> pasa y aplica pasa y aplica
         }
     }
     public void ApplyModifier(Directions direction,ValueModifier valueModifier , Slot target , int step  = 0)//- que pase el tipo de effecto tmb
@@ -136,14 +159,14 @@ public class Item
        
         if (target.GetNeighbor(direction, out Slot neighborSlot))
         {
-            Debug.Log("TryToApplyEffect");
+           // Debug.Log("TryToApplyEffect");
 
 
-            Item neighborItem = neighborSlot.Value;
+            Item neighborItem = neighborSlot.Item;
 
             if (neighborItem != null)
             {
-                Debug.Log("Succes");
+               // Debug.Log("Succes");
                 neighborItem.AddModifier(valueModifier);
             }
 

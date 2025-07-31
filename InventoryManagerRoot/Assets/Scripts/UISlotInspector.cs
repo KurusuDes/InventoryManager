@@ -38,7 +38,7 @@ public class UISlotInspector : MonoBehaviour
 
 
 
-        icon.sprite = slot.Value.Icon;
+        icon.sprite = slot.itemSO.Icon;
 
         foreach (var stat in slot.BaseStats)
         {
@@ -58,9 +58,9 @@ public class UISlotInspector : MonoBehaviour
             txt.text = modifier.effectType.ToString() + " == " + modifier.modifierValue;
             txts.Add(txt);
         }
-        if(slot.Value.chainEffect  != null)
+        if(slot.itemSO.chainEffect  != null)
         {
-            foreach (var effects in slot.Value.chainEffect.rangeOfEffects)
+            foreach (var effects in slot.itemSO.chainEffect.rangeOfEffects)
             {
                 TextMeshProUGUI txt = Instantiate(textPrefab, container);
                 txt.text = effects.direction.ToString() + " ; " + effects.step + " ; " + effects.valueModifier.effectType + ",";

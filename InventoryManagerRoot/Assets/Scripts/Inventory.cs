@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
     }
     public void SetInventory()
     {
-        ItemManager = new(null, size);
+        ItemManager = new(size);
         ItemManager.SetNeighbors(rows: 3);
 
         ItemManager.OnChange += SetAndTriggerEffects;
@@ -48,8 +48,8 @@ public class Inventory : MonoBehaviour
      
     }
     [Button]
-    public void AddItemToInventory(int _position, Item _item, int _quantity = 0)
-        => ItemManager.Add(_position, _item, _quantity);
+    public void AddItemToInventory(int _position, ItemSO _itemSO, int _quantity = 0)
+        => ItemManager.Add(_position, _itemSO, _quantity);
 
     #region Helpers
     [Button]
@@ -66,10 +66,15 @@ public class Inventory : MonoBehaviour
         {
             int randomID = UnityEngine.Random.Range(0, GameManager.Instance.itemDatabase.GetCount());
 
+            ItemSO itemSOref = GameManager.Instance.itemDatabase.ItemsList[randomID];
+
+
+            /*
             Item item = new Item(GameManager.Instance.itemDatabase.ItemsList[randomID], ItemManager.CurrentSlots[i]);
+            print(ItemManager.CurrentSlots[i]);*/
 
 
-            AddItemToInventory(i, item, UnityEngine.Random.Range(1, 10));
+            AddItemToInventory(i, itemSOref, UnityEngine.Random.Range(1, 10));
         }
     }
     [Button]
@@ -78,7 +83,7 @@ public class Inventory : MonoBehaviour
         foreach (var slot in ItemManager.CurrentSlots[position].Neighbors)
         {
             print(slot.Key);
-            print(slot.Value.Value.Value.EntityName);
+            print(slot.Value.Item.itemSO.EntityName);
            
         }
     }
@@ -87,20 +92,22 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
         {
-            if (ItemManager.CurrentSlots[i].Value == null) continue;
+            //print(ItemManager.CurrentSlots[i].Item.parentSlot);
+            if (ItemManager.CurrentSlots[i].Item == null) continue;
 
-            ItemManager.CurrentSlots[i].Value.ApplyModifiers();
+            ItemManager.CurrentSlots[i].Item.ApplyModifiers();
         }
        
     }
     [Button]
     public void ClearAllEffects()//->Limpia
     {
+        //print(ItemManager.CurrentSlots.Count);
         for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
         {
-            if (ItemManager.CurrentSlots[i].Value == null) continue;
+           // if (ItemManager.CurrentSlots[i].itemSO == null) continue;
 
-            ItemManager.CurrentSlots[i].Value.ResetStats();
+            ItemManager.CurrentSlots[i].Item.ResetStats();
         }
 
     }
@@ -109,23 +116,23 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < ItemManager.CurrentSlots.Count; i++)
         {
-            if (ItemManager.CurrentSlots[i].Value == null) continue;
+            if (ItemManager.CurrentSlots[i].Item == null) continue;
 
-            ItemManager.CurrentSlots[i].Value.ApplyEffect();
+            ItemManager.CurrentSlots[i].Item.ApplyEffect();
         }
 
     }
     [Button]
     public void SetEffect(int position)
     {
-        if (ItemManager.CurrentSlots[position].Value == null) return;
-        ItemManager.CurrentSlots[position].Value.ApplyModifiers();  
+        if (ItemManager.CurrentSlots[position].Item == null) return;
+        ItemManager.CurrentSlots[position].Item.ApplyModifiers();  
     }
     [Button]
     public void EnableEffects(int position)
     {
-        if (ItemManager.CurrentSlots[position].Value == null) return;
-        ItemManager.CurrentSlots[position].Value.ApplyEffect();
+        if (ItemManager.CurrentSlots[position].Item == null) return;
+        ItemManager.CurrentSlots[position].Item.ApplyEffect();
     }
     #endregion
 

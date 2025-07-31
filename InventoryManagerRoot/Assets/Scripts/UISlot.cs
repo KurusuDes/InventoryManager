@@ -68,7 +68,7 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     }
     public void SetSlot(Slot _slot , UIInventory _uiIventory)
     {      
-        if (_slot == null || _slot.Value == null)
+        if (  _slot == null || _slot.Item.itemSO == null || _slot.Item == null  )
         {
             Clear();
             
@@ -83,20 +83,20 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
             return;
         }
 
-       // print("El nombre del tempSlot" + _slot.Value.EntityName);
+       // print("El nombre del tempSlot" + _slot.itemSO.EntityName);
 
-        itemDatabaseID = _slot.Value.Value.ID;
+        itemDatabaseID = _slot.Item.itemSO.ID;
 
-        nameTxt.text = _slot.Value.Value.EntityName;
+        nameTxt.text = _slot.Item.itemSO.EntityName;
         amountTxt.text = _slot.Quantity.ToString();
-        icon.sprite = _slot.Value.Value.Icon;
+        icon.sprite = _slot.Item.itemSO.Icon;
 
 
         uiInvetory = _uiIventory;
         HasContent = true;
 
 
-        ItemData = _slot.Value;
+        ItemData = _slot.Item;
 
     }
     public void Set(int id)

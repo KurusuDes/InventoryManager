@@ -17,38 +17,44 @@ public class SlotManager<T>
 
     public  Action<int> OnSlotCleared;
 
-    public SlotManager(Item value , int quantity)
+    public SlotManager(int quantity)
     {
         for (int i = 0; i < quantity; i++)
         {
-            Slot _slot = new Slot(value, 0);
+            Slot _slot = new Slot(0);
             currentSlots.Add(i, _slot);
         }
     }
-    public void Add(int position, Item value,int quantity = 0)
+    public void Add(int position, ItemSO itemSO,int quantity = 0)
     {
         if (!currentSlots.TryGetValue(position, out Slot slot))
         {
             Debug.LogError("Position not found in inventory");
             return;
         }
-        if (slot.Value == null)
+        if(slot.Item == null)
         {
-            slot.SetValue(value);
+            throw new ArgumentNullException(nameof(slot.Item), "El slot no tiene un item asignado.");
+        }
+        if (!slot.Item.HasItem())
+        {
+            slot.SetValue(itemSO);
             slot.AddQuantity(quantity);
             currentSlots[position] = slot;
 
             OnSlotAdded?.Invoke(position, slot);
             OnChange?.Invoke();
+            //Debug.Log("ON CHANGE1");
             return;
         }
-        if (slot.CompareSlot(value))
+        if (slot.CompareSlot(itemSO))
         {
             slot.AddQuantity(quantity);
             currentSlots[position] = slot;
 
             OnSlotUpdated?.Invoke(position, slot);
             OnChange?.Invoke();
+            Debug.Log("ON CHANGE2");
         }
         else
         {
@@ -74,18 +80,28 @@ public class SlotManager<T>
         if (fromIndex == toIndex)
             return;
 
-        Slot fromSlot = currentSlots[fromIndex].Clone();
-        Slot toSlot = currentSlots[toIndex].Clone();
+        Slot fromSlot = currentSlots[fromIndex];
+        Slot toSlot = currentSlots[toIndex];
 
-        if (fromSlot == null || fromSlot.Value == null)
+        int fromQuantity = fromSlot.Quantity;
+        int toQuantity = toSlot.Quantity;
+
+        ItemSO fromItemSO = fromSlot.ItemSO;
+        ItemSO toItemSO = toSlot.ItemSO;
+
+
+        bool fromHasItem = fromSlot.Item.HasItem();
+        bool toHasItem = toSlot.Item.HasItem();
+
+        if (!fromHasItem && !toHasItem)
         {
             Debug.LogWarning("No hay item para mover en el slot de origen.");
             return;
         }
        
-        if (toSlot.Value == null || fromSlot.CompareSlot(toSlot.Value))
+        if (!toHasItem || fromSlot.CompareSlot(toSlot.ItemSO))
         {
-            Add(toIndex, fromSlot.Value, fromSlot.Quantity);
+            Add(toIndex, fromItemSO, fromQuantity);
             currentSlots[fromIndex].Clear(); 
             Debug.Log($"Item movido de {fromIndex} a {toIndex}");
 
@@ -96,12 +112,13 @@ public class SlotManager<T>
             currentSlots[fromIndex].Clear();
             currentSlots[toIndex].Clear();
 
-            Debug.Log(fromSlot.Value +""+ toSlot.Value + "");
-            Add(toIndex, fromSlot.Value, fromSlot.Quantity);
-            Add(fromIndex, toSlot.Value, toSlot.Quantity);
+            //Debug.Log(fromSlot.Item +""+ toSlot.Item + "");
+            Add(toIndex, fromItemSO, fromQuantity);
+            Add(fromIndex, toItemSO, toQuantity);
 
             Debug.Log($"Items intercambiados entre {fromIndex} y {toIndex}");
         }
+        OnChange?.Invoke();
         OnSlotSwapped?.Invoke(fromIndex, toIndex);
     }
 
