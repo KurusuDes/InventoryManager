@@ -29,6 +29,8 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     public TextMeshProUGUI amountTxt;
     public Image icon;
     public Image background;
+    public Sprite EnableConnector;
+    public Sprite DisableConnector;
 
     public Color normalColor;
     public Color highlightColor;
@@ -38,6 +40,7 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     private bool selected = false;
     public UIInventory uiInvetory;
     public List<UINeighbor> Neighbors;
+
 
 
 
@@ -68,7 +71,7 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     }
     public void SetSlot(Slot _slot , UIInventory _uiIventory)
     {      
-        if (_slot == null || _slot.Value == null)
+        if (  _slot == null || _slot.Item.itemSO == null || _slot.Item == null  )
         {
             Clear();
             
@@ -83,22 +86,47 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
             return;
         }
 
-       // print("El nombre del tempSlot" + _slot.Value.EntityName);
+       // print("El nombre del tempSlot" + _slot.itemSO.EntityName);
 
-        itemDatabaseID = _slot.Value.Value.ID;
+        itemDatabaseID = _slot.Item.itemSO.ID;
 
-        nameTxt.text = _slot.Value.Value.EntityName;
+        nameTxt.text = _slot.Item.itemSO.EntityName;
         amountTxt.text = _slot.Quantity.ToString();
-        icon.sprite = _slot.Value.Value.Icon;
+        icon.sprite = _slot.Item.itemSO.Icon;
 
 
         uiInvetory = _uiIventory;
         HasContent = true;
 
 
-        ItemData = _slot.Value;
+        ItemData = _slot.Item;
+
+        SetUIConnectors();
 
     }
+    public void SetUIConnectors()
+    {
+        foreach (var effects in ItemData.itemSO.chainEffect.rangeOfEffects)
+        {
+
+
+            foreach (var neighbor in Neighbors)
+            {
+                if (effects.direction == neighbor.Direction)
+                {
+                    neighbor.Connector.GetComponent<Image>().sprite = EnableConnector;
+                }
+                else
+                {
+                    neighbor.Connector.GetComponent<Image>().sprite = DisableConnector;
+                }
+            }
+           // if (Neighbors.   effects.direction)
+
+           
+        }
+    }
+
     public void Set(int id)
     {
         if (GameManager.Instance == null)
