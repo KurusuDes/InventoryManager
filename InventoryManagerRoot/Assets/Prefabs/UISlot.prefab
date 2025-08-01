@@ -628,6 +628,8 @@ MonoBehaviour:
   amountTxt: {fileID: 4351652233902010715}
   icon: {fileID: 7382590517514681973}
   background: {fileID: 2440541511804871969}
+  EnableConnector: {fileID: 488608623, guid: e54d9e3537a0a0748832544aa5ead707, type: 3}
+  DisableConnector: {fileID: 1898688389, guid: e54d9e3537a0a0748832544aa5ead707, type: 3}
   normalColor: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
   highlightColor: {r: 0.33746475, g: 0.764151, b: 0.2991723, a: 1}
   itemDatabaseID: 0

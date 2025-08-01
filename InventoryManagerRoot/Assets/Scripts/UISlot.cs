@@ -29,6 +29,8 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     public TextMeshProUGUI amountTxt;
     public Image icon;
     public Image background;
+    public Sprite EnableConnector;
+    public Sprite DisableConnector;
 
     public Color normalColor;
     public Color highlightColor;
@@ -38,6 +40,7 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     private bool selected = false;
     public UIInventory uiInvetory;
     public List<UINeighbor> Neighbors;
+
 
 
 
@@ -98,7 +101,32 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
 
         ItemData = _slot.Item;
 
+        SetUIConnectors();
+
     }
+    public void SetUIConnectors()
+    {
+        foreach (var effects in ItemData.itemSO.chainEffect.rangeOfEffects)
+        {
+
+
+            foreach (var neighbor in Neighbors)
+            {
+                if (effects.direction == neighbor.Direction)
+                {
+                    neighbor.Connector.GetComponent<Image>().sprite = EnableConnector;
+                }
+                else
+                {
+                    neighbor.Connector.GetComponent<Image>().sprite = DisableConnector;
+                }
+            }
+           // if (Neighbors.   effects.direction)
+
+           
+        }
+    }
+
     public void Set(int id)
     {
         if (GameManager.Instance == null)

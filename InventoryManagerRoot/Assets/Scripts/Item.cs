@@ -18,26 +18,12 @@ public class Item
 
     public List<StatModifier> BaseStats = new();
     public List<StatModifier> ModifiedStats = new();
-    public Item(Item item)
-    {
-        
-        itemSO = item.itemSO;
-    }
-    public Item()
-    {
-        itemSO = null;
-    }
-    public Item(ItemSO value)
+
+    public void SetValues(ItemSO value)
     {
         itemSO = value;
         BaseStats = new List<StatModifier>(itemSO.Stats);
-    }
-    public Item(ItemSO value , Slot slot)
-    {
-        itemSO = value;
-        parentSlot = slot;
-        Debug.Log("Item created with parent slot: " + parentSlot);
-        BaseStats = new List<StatModifier>(itemSO.Stats);
+        ModifiedStats = new List<StatModifier>(BaseStats);
     }
     public bool HasItem()
     {
@@ -72,11 +58,6 @@ public class Item
     public void ApplyEffect()
     {
         SortValueModifiers(modifiers);
-
-        //-RESETEAR STATS MODIFICADOS
-       /* ModifiedStats.Clear();
-        ModifiedStats = new List<StatModifier>(BaseStats);*/
-
 
         for (int i = 0; i < ModifiedStats.Count; i++)
         {

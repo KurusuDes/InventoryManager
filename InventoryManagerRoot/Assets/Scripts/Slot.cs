@@ -29,19 +29,15 @@ public class Slot
     public bool IsHighlighted => isHighlighted;
 
     public ItemSO ItemSO => item.itemSO;
-    public Slot(Item _value)
+    public Slot()
     {
-        item = _value;
+        item = new();
+        item.parentSlot = this;
+        quantity = 0;
     }
     public Slot(int _quantity)
     {
         item = new();
-        item.parentSlot = this;
-        quantity = _quantity;
-    }
-    public Slot(Item item,int _quantity)
-    {
-        item = new(item);
         item.parentSlot = this;
         quantity = _quantity;
     }
@@ -77,7 +73,7 @@ public class Slot
     }
     public void SetValue(ItemSO _value)
     {
-        item.itemSO = _value;
+        item.SetValues(_value);
     }
     public void Clear()
     {
@@ -95,12 +91,12 @@ public class Slot
     {
         neighbors[dir] = null;
     }
-    public Slot Clone()
+    /*public Slot Clone()
     {
         Slot clone = new Slot(item, quantity);
         
         return clone;
-    }
+    }*/
 
     public Dictionary<Directions, Slot> Neighbors => neighbors;
 }

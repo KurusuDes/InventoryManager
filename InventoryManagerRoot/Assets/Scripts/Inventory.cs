@@ -138,3 +138,6 @@ public class Inventory : MonoBehaviour
 
 
 }
+/*->TO DO
+ - Por alguna razon no se actualiza el valor principal
+*/
