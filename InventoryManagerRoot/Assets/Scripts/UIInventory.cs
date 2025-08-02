@@ -187,7 +187,13 @@ public class UIInventory : MonoBehaviour
     {
         if (clickedSlot != null)
         {
-            Debug.Log("Click simple sobre: " + clickedSlot.name);
+         /*   Debug.Log("Click simple sobre: " + clickedSlot.name);
+
+            if(clickedSlot.ItemData != null || clickedSlot.ItemData.itemSO != null)
+            {
+                Debug.Log("Click simple sobre: " + clickedSlot.ItemData.itemSO);
+            }*/
+            
 
             //->Descoplar despues con eventos
             GameManager.Instance.inventory.uiSlotInspector.SetSlot(clickedSlot.ItemData);

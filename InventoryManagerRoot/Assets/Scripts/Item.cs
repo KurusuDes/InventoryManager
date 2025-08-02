@@ -13,26 +13,31 @@ public class Item
 {
     private List<ValueModifier> modifiers = new List<ValueModifier>();
 
-    public Slot ItemSlot;
-    [ShowInInlineEditors]public ItemSO Value ;
+    public Slot parentSlot;
+    [ShowInInlineEditors]public ItemSO itemSO ;
 
     public List<StatModifier> BaseStats = new();
     public List<StatModifier> ModifiedStats = new();
 
-    public Item(ItemSO value)
+    public void SetValues(ItemSO value)
     {
-        Value = value;
-        BaseStats = new List<StatModifier>(Value.Stats);
+        itemSO = value;
+        BaseStats = new List<StatModifier>(itemSO.Stats);
+        ModifiedStats = new List<StatModifier>(BaseStats);
     }
-    public Item(ItemSO value , Slot slot)
+    public bool HasItem()
     {
-        Value = value;
-        ItemSlot = slot;
-        BaseStats = new List<StatModifier>(Value.Stats);
+        return itemSO != null;
     }
     public bool CompareItem(ItemSO _value)
     {
-        return Value.Equals(_value);
+        return itemSO.Equals(_value);
+    }
+    public void ClearItem()//->Cuando se mueve algo limpiar los modifiers
+    {
+        itemSO = null;
+        ResetStats();
+
     }
     public void ResetStats()//->Cuando se mueve algo limpiar los modifiers
     {
@@ -53,11 +58,6 @@ public class Item
     public void ApplyEffect()
     {
         SortValueModifiers(modifiers);
-
-        //-RESETEAR STATS MODIFICADOS
-        ModifiedStats.Clear();
-        ModifiedStats = new List<StatModifier>(BaseStats);
-
 
         for (int i = 0; i < ModifiedStats.Count; i++)
         {
@@ -110,36 +110,44 @@ public class Item
     public void ApplyModifiers()//-> LOS SLOTS VACIOS NO DEBEN SIGNIFICAR QUE TE DETIENE LOS SLOTS VACIOS DEBEN CONTENER LOS MODIFICADORES
 
     {
-        modifiers.Clear();//->RESETEAR MODIFICADORES
+        //modifiers.Clear();//->RESETEAR MODIFICADORES
 
-        if (Value.chainEffect == null || Value.chainEffect.rangeOfEffects.Count == 0)
+        if (itemSO == null||itemSO.chainEffect == null || itemSO.chainEffect.rangeOfEffects.Count == 0)
         {
-            Debug.LogWarning("No effects to apply.");
+            //Debug.LogWarning("No effects to apply.");
             return;
         }
 
-        List<EffectRange> rangeOfEffects = Value.chainEffect.rangeOfEffects;
+        List<EffectRange> rangeOfEffects = itemSO.chainEffect.rangeOfEffects;
 
         for (int i = 0; i < rangeOfEffects.Count; i++)
         {
-            Debug.Log("TryToApplyEffects");
-            ApplyModifier(rangeOfEffects[i].direction, rangeOfEffects[i].valueModifier, ItemSlot, rangeOfEffects[i].step);//-> pasa y aplica pasa y aplica
+            //Debug.Log("TryToApplyEffects");
+            if(parentSlot == null)
+            {
+                throw new System.Exception("Parent slot is null, cannot apply effects.");
+            }
+            ApplyModifier(rangeOfEffects[i].direction, rangeOfEffects[i].valueModifier, parentSlot, rangeOfEffects[i].step);//-> pasa y aplica pasa y aplica
         }
     }
     public void ApplyModifier(Directions direction,ValueModifier valueModifier , Slot target , int step  = 0)//- que pase el tipo de effecto tmb
     {
-        if (step == 0) return;
+        if (step == 0)
+        {
+            Debug.Log("Step is 0, stopping recursion.");
+            return;
+        }
        
         if (target.GetNeighbor(direction, out Slot neighborSlot))
         {
-            Debug.Log("TryToApplyEffect");
+           // Debug.Log("TryToApplyEffect");
 
 
-            Item neighborItem = neighborSlot.Value;
+            Item neighborItem = neighborSlot.Item;
 
             if (neighborItem != null)
             {
-                Debug.Log("Succes");
+               // Debug.Log("Succes");
                 neighborItem.AddModifier(valueModifier);
             }
 
