@@ -6,16 +6,24 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
 using NUnit.Framework.Interfaces;
+using System.Linq.Expressions;
 
 [Serializable]
-public struct UINeighbor
+public class UINeighbor
 {
     public Directions Direction;
     public GameObject Connector;
-    public UINeighbor(Directions direction,GameObject _image)
+    public bool Enabled;
+    public UINeighbor(Directions direction,GameObject _image, bool _enabled)
     {
         Connector = _image;
         Direction = direction;
+        Enabled = _enabled;
+    }
+    public void SetEnabled(bool _enabled)
+    {
+     //   Enabled = _enabled;
+        Connector.SetActive(_enabled);
     }
 }
 
@@ -62,12 +70,15 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
     {
         foreach (var neighbor in Neighbors)
         {
+            neighbor.SetEnabled(true);
+
             if (!_slot.Neighbors.TryGetValue(neighbor.Direction, out Slot value))
             {
-                neighbor.Connector.SetActive(false);
+                neighbor.SetEnabled(false);
             }
+            neighbor.Connector.GetComponent<Image>().sprite = DisableConnector;
+            neighbor.Enabled = false;
         }
-
     }
     public void SetSlot(Slot _slot , UIInventory _uiIventory)
     {      
@@ -101,31 +112,39 @@ public class UISlot : MonoBehaviour//->MOSTRAR LOS STATS MODIFICADOS Y ACTUALIZA
 
         ItemData = _slot.Item;
 
-        SetUIConnectors();
+        SetUIConnectors(_slot);
 
     }
-    public void SetUIConnectors()
+    public void SetUIConnectors(Slot _slot)
     {
-        foreach (var effects in ItemData.itemSO.chainEffect.rangeOfEffects)
+        foreach (var neighbors in Neighbors)
         {
+            if (!neighbors.Enabled) continue;
 
 
-            foreach (var neighbor in Neighbors)
+            if(ItemData.itemSO.chainEffect.GetDirections.Contains(neighbors.Direction))
             {
-                if (effects.direction == neighbor.Direction)
-                {
-                    neighbor.Connector.GetComponent<Image>().sprite = EnableConnector;
-                }
-                else
-                {
-                    neighbor.Connector.GetComponent<Image>().sprite = DisableConnector;
-                }
+                 neighbors.Connector.GetComponent<Image>().sprite = EnableConnector;
+                 neighbors.Enabled = true;
+                //neighbors.SetEnabled(true);
+                continue;
             }
-           // if (Neighbors.   effects.direction)
-
-           
+            //neighbors.SetEnabled(false);
+            neighbors.Connector.GetComponent<Image>().sprite = DisableConnector;
+            neighbors.Enabled = false;
+        }
+        
+    }
+    public void ClearConnectors()
+    {
+        foreach (var neighbors in Neighbors)
+        {
+            //neighbors.SetEnabled(false);
+            neighbors.Connector.GetComponent<Image>().sprite = DisableConnector;
+            neighbors.Enabled = false;
         }
     }
+
 
     public void Set(int id)
     {

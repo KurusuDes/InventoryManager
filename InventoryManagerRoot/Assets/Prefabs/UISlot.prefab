@@ -638,20 +638,28 @@ MonoBehaviour:
   Neighbors:
   - Direction: 1
     Connector: {fileID: 1674254969126565488}
+    Enabled: 1
   - Direction: 5
     Connector: {fileID: 6895409946765887617}
+    Enabled: 1
   - Direction: 3
     Connector: {fileID: 3752024765013984164}
+    Enabled: 1
   - Direction: 7
     Connector: {fileID: 734615989797385398}
+    Enabled: 1
   - Direction: 2
     Connector: {fileID: 1467057206750741794}
+    Enabled: 1
   - Direction: 8
     Connector: {fileID: 761009727357953375}
+    Enabled: 1
   - Direction: 4
     Connector: {fileID: 2258542739296498935}
+    Enabled: 1
   - Direction: 6
     Connector: {fileID: 7959455139177312273}
+    Enabled: 1
   HasContent: 0
 --- !u!222 &3770851712760314305
 CanvasRenderer:

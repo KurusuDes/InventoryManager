@@ -134,7 +134,7 @@ public class Item
     {
         if (step == 0)
         {
-            Debug.Log("Step is 0, stopping recursion.");
+            //Debug.Log("Step is 0, stopping recursion.");
             return;
         }
        

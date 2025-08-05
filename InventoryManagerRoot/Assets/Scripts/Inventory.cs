@@ -42,8 +42,10 @@ public class Inventory : MonoBehaviour
     public void SetUIInventory()
     {
         uiInventory.SetInventory(this);
-        ItemManager.OnSlotAdded += uiInventory.SetSlot;
-        ItemManager.OnSlotUpdated += uiInventory.SetSlot;
+        /*ItemManager.OnSlotAdded += uiInventory.SetSlot;
+        ItemManager.OnSlotUpdated += uiInventory.SetSlot;*/
+        ItemManager.OnSlotAdded += uiInventory.UpdateSlot;
+        ItemManager.OnSlotUpdated += uiInventory.UpdateSlot;
         ItemManager.OnSlotCleared += uiInventory.ClearSlot;
      
     }

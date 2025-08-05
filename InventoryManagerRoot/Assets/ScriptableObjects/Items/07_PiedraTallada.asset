@@ -16,7 +16,7 @@ MonoBehaviour:
   entityName: PiedraTallada
   description: 
   icon: {fileID: -475499792, guid: eb04f045a45957b4a96666f3c1f9461f, type: 3}
-  chainEffect: {fileID: 11400000, guid: 9839ef73c65cee94ab04592cd3e443a5, type: 2}
+  chainEffect: {fileID: 11400000, guid: 5e4888a6e2b862448b7bf521d1124172, type: 2}
   Stats:
   - Statistic: 1
     Value: 1

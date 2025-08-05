@@ -26,4 +26,19 @@ MonoBehaviour:
     step: 1
     valueModifier:
       effectType: 1
-      modifierValue: 10
+      modifierValue: 1
+  - direction: 2
+    step: 1
+    valueModifier:
+      effectType: 1
+      modifierValue: 1
+  - direction: 3
+    step: 1
+    valueModifier:
+      effectType: 1
+      modifierValue: 1
+  - direction: 4
+    step: 1
+    valueModifier:
+      effectType: 1
+      modifierValue: 1

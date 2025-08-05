@@ -71,6 +71,21 @@ public class UIInventory : MonoBehaviour
         slotsContainer.GetComponent<GridLayoutGroup>().constraintCount = inventory.rows;
     }
 
+
+
+
+    public void UpdateSlot(int position, Slot slot)
+    {
+      //  ClearConnectors();
+        SetSlot(position, slot);
+    }
+    public void ClearConnectors()
+    {
+        foreach (var slot in slots)
+        {
+            slot.ClearConnectors();
+        }
+    }
     public void SetSlot(int position, Slot slot)
     {
         if (position < 0 || position >= slots.Count || slot == null || slots[position] == null)

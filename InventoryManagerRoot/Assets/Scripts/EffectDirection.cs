@@ -38,4 +38,20 @@ public class EffectDirection : SerializedScriptableObject
 
     [SerializeField] public List<EffectRange> rangeOfEffects = new List<EffectRange>();
 
+    public List<Directions> GetDirections
+    {
+        get
+        {
+            List<Directions> directions = new List<Directions>();
+            foreach (var effect in rangeOfEffects)
+            {
+                if (!directions.Contains(effect.direction))
+                {
+                    directions.Add(effect.direction);
+                }
+            }
+            return directions;
+        }
+    }
+
 }
